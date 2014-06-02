@@ -6,7 +6,7 @@ from functools import wraps
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(
-    DEBUG=True,
+    DEBUG=False,
     SECRET_KEY='\x04\xdf\x9aW\r\xa3\x9f\xaf\x9b\x89A\xb7\xa1\xb0h+\xc8\x0c\xfe\xe1\xbdI\r\x8f',
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.realpath('./sqlite.db'),
     SEARCH_RADIUS = 1
