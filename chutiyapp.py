@@ -7,7 +7,7 @@ app.config.from_object(__name__)
 app.config.update(dict(
     DEBUG=True,
     SECRET_KEY='\x04\xdf\x9aW\r\xa3\x9f\xaf\x9b\x89A\xb7\xa1\xb0h+\xc8\x0c\xfe\xe1\xbdI\r\x8f',
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.realpath('./sqlite.db')
 ))
 import models
 
