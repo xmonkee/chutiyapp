@@ -8,3 +8,7 @@ input[type="text"],
 .container .column, .container .columns {
 float: none;
 }
+
+.no-underline{
+    text-decoration: none;
+}

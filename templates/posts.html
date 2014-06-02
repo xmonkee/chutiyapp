@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
+
+    <h3><a href="{{url_for('new_post')}}" class="button">Add a new post</a></a>
     <h4><ol>
         {% for post in posts %}
             <li><a href="{{ url_for('get_post', slug=post.slug, title=post.title|space_to_underscore) }}">{{ post.title }}</a></li>
