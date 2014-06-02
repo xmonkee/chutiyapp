@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Getting Location Information</h2>
+<h5>We can't do our thing without it</h5>
+{% if form.errors %}
+    <ul class="errors">
+        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+            {% for error in field_errors %}
+                <li>{{ form[field_name].label }} {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+{% endif %}
+<form action="{{ url_for('login') }}" method="POST">
+    <div id='locationFields'><p>Getting your location... Please allow your browser to tell us.</p></div>
+    <button type="submit">Submit</button>
+</form>
+
+<script type="text/javascript">
+    function fieldAppear(position){
+        document.getElementById('locationFields').innerHTML = 
+            "<input type='hidden' name='lon' value="+position.coords.longitude+">" + 
+            "<input type='hidden' name='lat' value="+position.coords.latitude+">" +
+            "<hr>"+
+            "<div>Latitude: " + position.coords.latitude + "</div>" +
+            "<div>Longitude: " + position.coords.longitude + "</div>" +
+            "<hr>"+
+            "";
+    }
+    function locationError(err){
+        alert("Location needed for this service")
+    }
+    function getLocation(func, errFunc) {
+        navigator.geolocation.getCurrentPosition(func, errFunc);
+    }
+    getLocation(fieldAppear, locationError) 
+</script>
+{% endblock %}

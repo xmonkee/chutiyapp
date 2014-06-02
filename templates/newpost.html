@@ -16,25 +16,6 @@
 
     <label for="body">Text</label>
     <textarea name="body" rows=15></textarea>
-    <div id='locationFields'><p>Getting your location... Please allow your browser to tell us.</p></div>
     <button type="submit">Submit</button>
 </form>
-
-<script type="text/javascript">
-    function fieldAppear(position){
-        document.getElementById('locationFields').innerHTML = 
-            "<input type='hidden' name='locx' value="+position.coords.longitude+">" + 
-            "<input type='hidden' name='locy' value="+position.coords.latitude+">" +
-            "<p>Longitude: " + position.coords.longitude + "</p>" +
-            "<p>Latitude: " + position.coords.latitude + "</p>" ;
-            console.log("in here");
-    }
-    function locationError(err){
-        alert("Location needed for this service")
-    }
-    function getLocation(func, errFunc) {
-        navigator.geolocation.getCurrentPosition(func, errFunc);
-    }
-    getLocation(fieldAppear, locationError) 
-</script>
 {% endblock %}

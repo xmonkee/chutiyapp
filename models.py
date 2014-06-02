@@ -3,12 +3,15 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 from wtforms import Form, TextField, FloatField, validators
+from hashlib import md5
+from geoloc import geoloc
 
 
 db = SQLAlchemy(app)
 
 class Post(db.Model):
     id = db.Column(db.Integer,primary_key=True)
+    slug = db.Column(db.String(10),unique=True)
     title = db.Column(db.String(140))
     body = db.Column(db.String(10000))
     username = db.Column(db.String(50))
@@ -19,6 +22,7 @@ class Post(db.Model):
 
     def __init__(self, title, body, username, 
         locx, locy, created_at=None, edited_at=None):
+        self.slug = md5(str(datetime.utcnow())).hexdigest()[:10]
         self.title = title
         self.body = body
         self.username = username
@@ -37,6 +41,7 @@ class Post(db.Model):
     def to_dict(self):
         return dict(
             id = self.id,
+            slug = self.slug,
             title = self.title,
             body = self.body,
             username = self.username,
@@ -46,11 +51,26 @@ class Post(db.Model):
             edited_at = str(datetime.utcnow() - self.edited_at),
             )
 
+    @staticmethod
+    def get_all(loc):
+        bounds = geoloc.bounds(loc)
+        return Post.query.filter(Post.locy > bounds['lower']['lat'],
+                                 Post.locy < bounds['upper']['lat'],
+                                 Post.locx > bounds['lower']['lon'],
+                                 Post.locy < bounds['upper']['lon'],
+                                )
+
+    @staticmethod
+    def get_post_from_slug(slug):
+        return Post.query.filter_by(slug = slug).first()
+
 class PostForm(Form):
     title = TextField('Title', [validators.length(min=3, max=140)])
     body = TextField('Text', [validators.length(max=5000)])
-    locx = FloatField('Longitude', [validators.NumberRange(min=-180, max=180)])
-    locy = FloatField('latitude', [validators.NumberRange(min=-90, max=90)])
+
+class LoginForm(Form):
+    lon = FloatField('Longitude', [validators.required(), validators.NumberRange(min=-180, max=180)])
+    lat = FloatField('latitude', [validators.required(), validators.NumberRange(min=-90, max=90)])
     
 
 class Reply(db.Model):
