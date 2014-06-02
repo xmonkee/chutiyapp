@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>Chutiyapp</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/base.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/skeleton.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/chutiyapp.css') }}">
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!-- Favicons
+  ================================================== -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico')}}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+</head>
+<body>
+
+
+
+  <!-- Primary Page Layout
+  ================================================== -->
+
+
+  <div class="container">
+    <div class="sixteen columns">
+      <h1 class="remove-bottom" style="margin-top: 40px">Chutiyapp</h1>
+      <h5>Version 1.2</h5>
+      <hr />
+    </div>
+    <div class="one-half column">
+    {% block body %}{% endblock %}
+    </div>
+
+  </div><!-- container -->
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/geolocation.js') }}"></script>
+<!-- End Document
+================================================== -->
+</body>
+</html>
+
+
+
