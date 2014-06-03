@@ -6,13 +6,18 @@ from functools import wraps
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(
-    DEBUG=False,
+    DEBUG=True,
     SECRET_KEY='\x04\xdf\x9aW\r\xa3\x9f\xaf\x9b\x89A\xb7\xa1\xb0h+\xc8\x0c\xfe\xe1\xbdI\r\x8f',
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.realpath('./sqlite.db'),
-    SEARCH_RADIUS = 1
+    SEARCH_RADIUS = 1,
+    DEFAULT_LOC = {'lat': 50, 'lon': 50}
 ))
 import models
-from geoloc import geoloc
+from geoloc import geoloc, timesince
+
+##########################
+# Decorators and Filters #
+##########################
 
 #Decorator function that checks for authentication
 def requires_checkin(f):
@@ -24,11 +29,18 @@ def requires_checkin(f):
         return f(*args, **kwargs)
     return decorated_function
 
-#filter for jinga to turn spaces to underscores
+#filter for jinja to turn spaces to underscores
 @app.template_filter('space_to_underscore')
 def space_to_underscore(string):
     return '_'.join(string.split(' '))
 
+#filter to turn datetime to soft format
+app.template_filter('relative')(timesince.timesince)
+
+
+#########################
+#      App Routes       #
+#########################
 
 @app.route('/', methods=['GET'])
 @requires_checkin
@@ -40,19 +52,6 @@ def get_all_posts():
 def get_post(slug, title):
     post = models.Post.get_post_from_slug(slug)
     return render_template('post.html', post=post)
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if 'username' not in session:
-        session['username'] = gennames.gen_name()
-    form = models.LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        lat = form.lat.data
-        lon = form.lon.data
-        session['loc'] = {'lat':lat, 'lon':lon}
-        return redirect(url_for('get_all_posts'))
-    return render_template('login.html', form=form)
-
 
 @app.route('/newpost', methods=['GET', 'POST'])
 @requires_checkin
@@ -70,6 +69,22 @@ def new_post():
         return redirect(url_for('get_all_posts'))
     return render_template('newpost.html', form=form)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'username' not in session:
+        session['username'] = gennames.gen_name()
+    form = models.LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        lat = form.lat.data
+        lon = form.lon.data
+        session['loc'] = {'lat':lat, 'lon':lon}
+        return redirect(url_for('get_all_posts'))
+    return render_template('login.html', form=form)
+
+####################################
+#            API Routes            #
+####################################
+
 #Generate posts as Json
 @app.route('/api/posts/')
 def get_posts_json():
@@ -84,9 +99,13 @@ def get_post_json(id):
         replies = [reply.to_dict() for reply in models.Post.query.get(id).replies]
     return jsonify({'post':post.to_dict(), 'replies':replies})
 
+####################################
+#              Other               #
+####################################
+
+
 def init_db():
     models.db.create_all()
-
 
 if __name__ == '__main__':
     app.run()

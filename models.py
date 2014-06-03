@@ -58,7 +58,7 @@ class Post(db.Model):
                                  Post.locy < bounds['upper']['lat'],
                                  Post.locx > bounds['lower']['lon'],
                                  Post.locy < bounds['upper']['lon'],
-                                )
+                                ).order_by(Post.created_at.desc())
 
     @staticmethod
     def get_post_from_slug(slug):

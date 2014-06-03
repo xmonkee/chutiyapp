@@ -4,7 +4,13 @@
     <h3><a href="{{url_for('new_post')}}" class="button">Add a new post</a></a>
     <h4><ol>
         {% for post in posts %}
-            <li><a href="{{ url_for('get_post', slug=post.slug, title=post.title|space_to_underscore) }}">{{ post.title }}</a></li>
+            <li>
+                <a href="{{ url_for('get_post', 
+                                    slug=post.slug, 
+                                    title=post.title|space_to_underscore) }}">
+                {{ post.title }}</a>
+                <h6>Posted by {{post.username}} {{post.created_at | relative}} ago</h6>
+            </li>
             <br>
         {% endfor %}
     </ol></h4>

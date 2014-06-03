@@ -17,22 +17,26 @@
 </form>
 
 <script type="text/javascript">
-    function fieldAppear(position){
+    loc = {'lat': 19, 'lon': 72};
+    function fieldAppear(loc){
         document.getElementById('locationFields').innerHTML = 
-            "<input type='hidden' name='lon' value="+position.coords.longitude+">" + 
-            "<input type='hidden' name='lat' value="+position.coords.latitude+">" +
-            "<hr>"+
-            "<div>Latitude: " + position.coords.latitude + "</div>" +
-            "<div>Longitude: " + position.coords.longitude + "</div>" +
-            "<hr>"+
+            "<label for='lat'>Latitude</label>" +
+            "<input type='text' name='lat' value="+loc.lat+">" +
+            "<label for='lon'>Longitude</label>" +
+            "<input type='text' name='lon' value="+loc.lon+">" + 
             "";
     }
-    function locationError(err){
-        alert("Location needed for this service")
+    function gotLocation(position){
+        loc = {'lat': position.coords.latitude,
+               'lon': position.coords.longitude}
+        fieldAppear(loc);
     }
-    function getLocation(func, errFunc) {
-        navigator.geolocation.getCurrentPosition(func, errFunc);
+    function noLocation(err){
+        alert("Couldn't get your location");
+        loc = {'lat': {{config['DEFAULT_LOC']['lat']}},
+               'lon': {{config['DEFAULT_LOC']['lon']}}};
+        fieldAppear(loc);
     }
-    getLocation(fieldAppear, locationError) 
+    navigator.geolocation.getCurrentPosition(gotLocation, noLocation);
 </script>
 {% endblock %}
