@@ -3,6 +3,12 @@
     <ul id="nav">
         <li><a href="{{url_for('new_post')}}"> Add a new post </a></li>
     </ul>
+    {% if posts %}
+    <h4>Posts from your area:</h4>
+    {% else %}
+    <h4>There are currently no posts in your area. Create one!</h4>
+    {% endif %}
+    <br>
     <h4><ol style="float: left">
         {% for post in posts %}
             <li class="post-card">
