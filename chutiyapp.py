@@ -7,13 +7,13 @@ from flaskext.markdown import Markdown
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(
-    DEBUG=bool(os.environ['DEBUG']),
+    DEBUG=bool(os.getenv('DEBUG', 'FALSE')),
     SECRET_KEY='\x04\xdf\x9aW\r\xa3\x9f\xaf\x9b\x89A\xb7\xa1\xb0h+\xc8\x0c\xfe\xe1\xbdI\r\x8f',
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.realpath('./sqlite.db'),
-    SEARCH_RADIUS = int(os.environ['SEARCH_RADIUS']),
+    SEARCH_RADIUS = int(os.getenv('SEARCH_RADIUS', '3')),
     DEFAULT_LOC = {'lat': 18.9037004, 'lon': 72.8131432},
-    POSTS_PER_PAGE = int(os.environ['POSTS_PER_PAGE']),
-    REPLIES_PER_PAGE = 100,
+    POSTS_PER_PAGE = int(os.getenv('POSTS_PER_PAGE','100')),
+    REPLIES_PER_PAGE = int(os.getenv('REPLIES_PER_PAGE', '100')),
 ))
 Markdown(app)
 import models

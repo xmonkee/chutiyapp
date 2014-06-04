@@ -88,3 +88,11 @@ a:hover[id='change-button']{
 .reply-body{
     margin-top: 0px;
 }
+
+#replies-list * ul {
+    list-style: disk inside;
+}
+
+#post-body ul {
+    list-style: disc inside;
+}

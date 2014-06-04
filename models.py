@@ -20,6 +20,7 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime)
     edited_at = db.Column(db.DateTime)
     number_replies = db.Column(db.Integer)
+    sticky = db.Column(db.Boolean)
 
     def __init__(self, title, body, username, 
         locx, locy, created_at=None, edited_at=None):
@@ -36,6 +37,7 @@ class Post(db.Model):
             edited_at = datetime.utcnow()
         self.edited_at = edited_at
         self.number_replies = 0
+        self.sticky = False
 
     def __repr__(self):
         return '<Post: %s>' % self.title
@@ -61,11 +63,13 @@ class Post(db.Model):
     @staticmethod
     def get_all(loc):
         bounds = geoloc.bounds(loc)
-        return Post.query.filter(Post.locy > bounds['lower']['lat'],
+        stickied = Post.query.filter(Post.sticky).all()
+        local = Post.query.filter(Post.locy > bounds['lower']['lat'],
                                  Post.locy < bounds['upper']['lat'],
                                  Post.locx > bounds['lower']['lon'],
                                  Post.locy < bounds['upper']['lon'],
                                 ).order_by(Post.edited_at.desc())[:app.config['POSTS_PER_PAGE']]
+        return stickied+local
 
     def get_replies(self):
         return self.replies.order_by(Reply.created_at.desc())[:app.config['REPLIES_PER_PAGE']]
