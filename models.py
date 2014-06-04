@@ -65,7 +65,7 @@ class Post(db.Model):
                                  Post.locy < bounds['upper']['lat'],
                                  Post.locx > bounds['lower']['lon'],
                                  Post.locy < bounds['upper']['lon'],
-                                ).order_by(Post.edited_at.desc())[:app.config['ITEMS_PER_PAGE']]
+                                ).order_by(Post.edited_at.desc())[:app.config['POSTS_PER_PAGE']]
 
     def get_replies(self):
         return self.replies.order_by(Reply.created_at.desc())[:app.config['REPLIES_PER_PAGE']]

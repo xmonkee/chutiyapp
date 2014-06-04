@@ -7,12 +7,12 @@ from flaskext.markdown import Markdown
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(
-    DEBUG=False,
+    DEBUG=bool(os.environ['DEBUG']),
     SECRET_KEY='\x04\xdf\x9aW\r\xa3\x9f\xaf\x9b\x89A\xb7\xa1\xb0h+\xc8\x0c\xfe\xe1\xbdI\r\x8f',
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.realpath('./sqlite.db'),
-    SEARCH_RADIUS = 3,
+    SEARCH_RADIUS = int(os.environ['SEARCH_RADIUS']),
     DEFAULT_LOC = {'lat': 18.9037004, 'lon': 72.8131432},
-    ITEMS_PER_PAGE = 100,
+    POSTS_PER_PAGE = int(os.environ['POSTS_PER_PAGE']),
     REPLIES_PER_PAGE = 100,
 ))
 Markdown(app)

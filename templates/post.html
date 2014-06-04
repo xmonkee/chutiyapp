@@ -11,6 +11,7 @@
 <br>
 <div id="post-body">
     {{post.body|markdown}}
+</div>
     <div id="reply-box">
         <form action="#" method="POST">
             <label for="body">Reply (can be formatted using 
@@ -30,7 +31,6 @@
         </ul>
         {% endif %}
     </div>
-</div>
 <hr>
 <ul id="replies-list">
     {% for reply in replies %}
