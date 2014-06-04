@@ -3,8 +3,8 @@
 <ul id="nav">
     <li><a href="{{url_for('get_all_posts')}}"> Cancel </a></li>
 </ul>
-<h2>Getting Location Information</h2>
-<h5>We can't do our thing without it</h5>
+<h2>Welcome to Chutiyapp! Your local free speech zone</h2>
+<h3 id="noLocation">If you allow your browser to send us your anonymized location, we can connect you with people around you!</h3>
 {% if form.errors %}
     <ul class="errors">
         {% for field_name, field_errors in form.errors|dictsort if field_errors %}
@@ -15,7 +15,7 @@
     </ul>
 {% endif %}
 <form action="{{ url_for('login') }}" method="POST">
-    <div id='locationFields'><p>Getting your location... Please allow your browser to tell us.</p></div>
+    <div id='locationFields'><p class="errors">Getting your location... Please allow your browser to tell us.</p></div>
     <button type="submit">Submit</button>
 </form>
 
@@ -33,12 +33,15 @@
         loc = {'lat': position.coords.latitude,
                'lon': position.coords.longitude}
         fieldAppear(loc);
+
     }
     function noLocation(err){
-        alert("Couldn't get your location");
+        alert("We couldn't get your location, using a random one");
         loc = {'lat': {{config['DEFAULT_LOC']['lat']}},
                'lon': {{config['DEFAULT_LOC']['lon']}}};
         fieldAppear(loc);
+        document.getElementById('noLocation').innerHTML = 
+        "<div class='errors'> :( Coulnd't get your location. Using random </div>";
     }
     navigator.geolocation.getCurrentPosition(gotLocation, noLocation);
 </script>
