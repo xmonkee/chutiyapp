@@ -19,6 +19,7 @@ class Post(db.Model):
     locy = db.Column(db.Float)
     created_at = db.Column(db.DateTime)
     edited_at = db.Column(db.DateTime)
+    number_replies = db.Column(db.Integer)
 
     def __init__(self, title, body, username, 
         locx, locy, created_at=None, edited_at=None):
@@ -34,6 +35,7 @@ class Post(db.Model):
         if edited_at is None:
             edited_at = datetime.utcnow()
         self.edited_at = edited_at
+        self.number_replies = 0
 
     def __repr__(self):
         return '<Post: %s>' % self.title
@@ -94,6 +96,7 @@ class Reply(db.Model):
             created_at = datetime.utcnow()
         self.created_at = created_at
         self.post.edited_at = created_at
+        self.post.number_replies = self.post.number_replies + 1
 
 
     def __repr__(self):

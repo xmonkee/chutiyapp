@@ -10,7 +10,7 @@
                                     slug=post.slug, 
                                     title=post.title|space_to_underscore) }}">
                 {{ post.title }}</a>
-                <div class="subtitle"> {{post.username}} | {{post.created_at | relative}} ago</div>
+                <div class="subtitle"> {{post.username}} | {{post.number_replies}} replies| {{post.edited_at | relative}} ago </div>
             </li>
             <br>
         {% endfor %}
