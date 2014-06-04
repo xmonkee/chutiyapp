@@ -1,15 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
-
-    <h3><a href="{{url_for('new_post')}}" class="button">Add a new post</a></a>
-    <h4><ol>
+    <ul id="nav">
+        <li><a href="{{url_for('new_post')}}"> Add a new post </a></li>
+    </ul>
+    <h4><ol style="float: left">
         {% for post in posts %}
-            <li>
-                <a href="{{ url_for('get_post', 
+            <li class="post-card">
+                <a class="title" href="{{ url_for('get_post', 
                                     slug=post.slug, 
                                     title=post.title|space_to_underscore) }}">
                 {{ post.title }}</a>
-                <h6>Posted by {{post.username}} {{post.created_at | relative}} ago</h6>
+                <div class="subtitle"> {{post.username}} | {{post.created_at | relative}} ago</div>
             </li>
             <br>
         {% endfor %}

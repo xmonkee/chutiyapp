@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
+<ul id="nav">
+    <li><a href="{{url_for('get_all_posts')}}"> Cancel </a></li>
+</ul>
 <h2>Getting Location Information</h2>
 <h5>We can't do our thing without it</h5>
 {% if form.errors %}

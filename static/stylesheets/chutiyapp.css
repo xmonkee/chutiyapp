@@ -5,10 +5,87 @@ input[type="text"],
     select {
         width: 100%; }
 
-.container .column, .container .columns {
-float: none;
+.title{
+    text-decoration: none;
+    color: #000;
 }
 
-.no-underline{
+.post-card .title{
+    font-size: 25px;
+    font-family: serif;
+    margin-bottom: 0px;
+    line-height: 23px;
+}
+.post-card .subtitle{
+    font-size: 14px;
+    color: #333;
+    margin-top: 5px;
+}
+.post-card a{
+    color: #000;
+}
+.post-card a:visited{
+    color: #666;
+}
+.post-card a:hover{
+    background-color: #ddd;
+}
+
+#nav{
+    width: 100%;
+    float: left;
+    margin: 0 0 3em 0;
+    padding: 0;
+    list-style: none; 
+    font-family: serif;
+    font-size: 20px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+#nav li a{ 
+    float:left;
+    background-color: #ddd;
+    color: #333;
     text-decoration: none;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    padding: 5px;
+}
+#nav li a:hover{ 
+    color:#ddd; background: #333; 
+}
+
+a:hover[class="nav-button"] {color:#ddd; background: #333;}
+
+a[id='change-button']{
+    border-radius: 2px;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+}
+a:hover[id='change-button']{
+    background-color: #333;
+    color: #ddd;
+}
+
+.errors{
+    background-color: #ffd;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.reply{
+    background-color: #eee;
+}
+.reply-info{
+    font-family: serif;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: -20px;
+}
+.reply-body{
+    margin-top: 0px;
 }

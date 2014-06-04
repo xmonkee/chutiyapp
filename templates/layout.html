@@ -42,17 +42,19 @@
 
   <div class="container">
     <div class="sixteen columns">
-      <h1 class="remove-bottom" style="margin-top: 40px"><a href="/" class="no-underline">Chutiyapp</a></h1>
-      <h5>Version 1.2</h5>
-      <hr />
-    </div>
-    <div class="one-half column">
+      <h1 class="remove-bottom" style="margin-top: 20px"><a href="/" class="title">Chutiyapp</a></h1>
+        <h5><a id="change-button" href={{url_for('login')}}>
+        {% if 'loc' in session%}
+        latitude:  {{session['loc']['lat']|floating(4)}} 
+        longitude: {{session['loc']['lon']|floating(4)}}
+        {% endif %}
+        </a></h5>
+        {# <a href={{url_for('login')}} id="change-button">change location</a> #}
     {% block body %}{% endblock %}
-    </div>
 
+  </div>
   </div><!-- container -->
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/geolocation.js') }}"></script>
 <!-- End Document
 ================================================== -->
 </body>

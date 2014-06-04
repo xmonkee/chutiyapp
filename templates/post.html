@@ -1,5 +1,39 @@
 {% extends "layout.html" %}
 {% block body %}
+<ul id="nav">
+    <li><a href="{{url_for('get_all_posts')}}"> Back </a></li>
+</ul>
 <h3>{{post.title}}</h3>
-{{post.body}}
+<h6> Posted by {{post.username}} {{post.created_at | relative}} ago</h6>
+<br>
+<div id="post-body">
+    {{post.body|markdown}}
+    <div id="reply-box">
+        <form action="#" method="POST">
+            <label for="body">Reply (can be formatted using 
+            <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"> 
+            markdown</a>)
+            </label>
+            <textarea name="body" rows=5>{{ form.body.data or '' }}</textarea>
+            <button type="submit">Submit</button>
+        </form>
+        {% if form.errors %}
+        <ul class="errors">
+            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+            {% for error in field_errors %}
+            <li>{{ form[field_name].label }} {{ error }}</li>
+            {% endfor %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+<ul id="replies-list">
+    {% for reply in replies %}
+    <li class="reply">
+        <p class="reply-info">{{reply.username}} {{reply.created_at | relative}} ago</p>
+        <p class="reply-body">{{reply.body | markdown}}</p>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}

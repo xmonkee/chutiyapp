@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
+<ul id="nav">
+<li><a href="{{url_for('get_all_posts')}}"> Cancel </a></li>
+</ul>
 <h2> Create New Post</h2>
 {% if form.errors %}
     <ul class="errors">
@@ -12,10 +15,9 @@
 {% endif %}
 <form action="{{ url_for('new_post') }}" method="POST">
     <label for="title">Title</label>
-    <input type="text" name="title" width=110>
-
-    <label for="body">Text</label>
-    <textarea name="body" rows=15></textarea>
+    <input type="text" name="title" value="{{ form.title.data or '' }}">
+    <label for="body">Text (can be formatted using <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"> markdown</a>)</label>
+    <textarea name="body" rows=15>{{ form.body.data or '' }}</textarea>
     <button type="submit">Submit</button>
 </form>
 {% endblock %}

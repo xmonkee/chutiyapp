@@ -50,7 +50,12 @@ class Post(db.Model):
             created_at = str(datetime.utcnow() - self.created_at),
             edited_at = str(datetime.utcnow() - self.edited_at),
             )
-
+    
+    ###################################################################
+    # Generates posts for the front page. We filter by location here, #
+    # we sort it by editing time and we cut off our results at the    #
+    # ITEMS_PER_PAGE number                                           #
+    ###################################################################
     @staticmethod
     def get_all(loc):
         bounds = geoloc.bounds(loc)
@@ -58,7 +63,10 @@ class Post(db.Model):
                                  Post.locy < bounds['upper']['lat'],
                                  Post.locx > bounds['lower']['lon'],
                                  Post.locy < bounds['upper']['lon'],
-                                ).order_by(Post.created_at.desc())
+                                ).order_by(Post.edited_at.desc())[:app.config['ITEMS_PER_PAGE']]
+
+    def get_replies(self):
+        return self.replies.order_by(Reply.created_at.desc())[:app.config['REPLIES_PER_PAGE']]
 
     @staticmethod
     def get_post_from_slug(slug):
@@ -68,24 +76,25 @@ class PostForm(Form):
     title = TextField('Title', [validators.length(min=3, max=140)])
     body = TextField('Text', [validators.length(max=5000)])
 
-class LoginForm(Form):
-    lon = FloatField('Longitude', [validators.required(), validators.NumberRange(min=-180, max=180)])
-    lat = FloatField('latitude', [validators.required(), validators.NumberRange(min=-90, max=90)])
-    
-
 class Reply(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(5000))
     username = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime)
 
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     post = db.relationship('Post',
         backref=db.backref('replies', lazy='dynamic'))
 
-    def __init__(self, post, body, username):
+    def __init__(self, post, body, username, created_at=None):
         self.post = post
         self.body = body
         self.username = username
+        if created_at is None:
+            created_at = datetime.utcnow()
+        self.created_at = created_at
+        self.post.edited_at = created_at
+
 
     def __repr__(self):
         return '<Reply: %s>' % self.body[:100]
@@ -97,4 +106,9 @@ class Reply(db.Model):
             body = self.body,
             username = self.username)
 
+class LoginForm(Form):
+    lon = FloatField('Longitude', [validators.required(), validators.NumberRange(min=-180, max=180)])
+    lat = FloatField('latitude', [validators.required(), validators.NumberRange(min=-90, max=90)])
 
+class ReplyForm(Form):
+    body = TextField('Reply', [validators.length(min=1, max=5000)])

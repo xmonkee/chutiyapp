@@ -2,6 +2,7 @@ from flask import Flask, session, url_for, redirect, jsonify, render_template, r
 from gennames import gennames
 import os
 from functools import wraps
+from flaskext.markdown import Markdown
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -9,9 +10,12 @@ app.config.update(dict(
     DEBUG=True,
     SECRET_KEY='\x04\xdf\x9aW\r\xa3\x9f\xaf\x9b\x89A\xb7\xa1\xb0h+\xc8\x0c\xfe\xe1\xbdI\r\x8f',
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.realpath('./sqlite.db'),
-    SEARCH_RADIUS = 1,
-    DEFAULT_LOC = {'lat': 50, 'lon': 50}
+    SEARCH_RADIUS = 3,
+    DEFAULT_LOC = {'lat': 18.9037004, 'lon': 72.8131432},
+    ITEMS_PER_PAGE = 100,
+    REPLIES_PER_PAGE = 100,
 ))
+Markdown(app)
 import models
 from geoloc import geoloc, timesince
 
@@ -37,6 +41,11 @@ def space_to_underscore(string):
 #filter to turn datetime to soft format
 app.template_filter('relative')(timesince.timesince)
 
+#filter to format floats
+@app.template_filter('floating')
+def format_float(num, d):
+    return ("%0." + str(d) + "f") % num
+
 
 #########################
 #      App Routes       #
@@ -47,11 +56,20 @@ app.template_filter('relative')(timesince.timesince)
 def get_all_posts():
     return render_template('posts.html', posts=models.Post.get_all(session['loc']))
 
-@app.route('/post/<slug>/<title>')
+@app.route('/post/<slug>/<title>', methods=['GET', 'POST'])
 @requires_checkin
 def get_post(slug, title):
     post = models.Post.get_post_from_slug(slug)
-    return render_template('post.html', post=post)
+    replies = post.get_replies()
+    form = models.ReplyForm(request.form)
+    if request.method == 'POST' and form.validate():
+        username = session['username']
+        body = form.body.data
+        reply = models.Reply(post=post, body=body, username=username)
+        models.db.session.add(reply)
+        models.db.session.commit()
+        return redirect(url_for('get_post',slug=slug, title=title))
+    return render_template('post.html', form=form, post=post, replies=replies)
 
 @app.route('/newpost', methods=['GET', 'POST'])
 @requires_checkin
@@ -81,10 +99,11 @@ def login():
         return redirect(url_for('get_all_posts'))
     return render_template('login.html', form=form)
 
+
 ####################################
 #            API Routes            #
 ####################################
-
+"""
 #Generate posts as Json
 @app.route('/api/posts/')
 def get_posts_json():
@@ -98,6 +117,7 @@ def get_post_json(id):
     if post:
         replies = [reply.to_dict() for reply in models.Post.query.get(id).replies]
     return jsonify({'post':post.to_dict(), 'replies':replies})
+"""
 
 ####################################
 #              Other               #
