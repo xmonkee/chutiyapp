@@ -26,4 +26,4 @@ def populate_databse(n,m):
     db.session.commit()
 
 if __name__=='__main__':
-    populate_databse(200, 200)
+    populate_databse(200, 10)
