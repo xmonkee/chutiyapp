@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+{% include "replies.html" %}
 <ul id="nav">
     <li><a href="{{url_for('get_all_posts')}}"> Back </a></li>
 </ul>
@@ -12,11 +13,12 @@
 <div id="post-body">
     {{post.body|markdown}}
 </div>
-    <div id="reply-box">
+<div id="replies-box"></div>
+<div id="replies-box">
+    <div id="reply-form">
         <form action="#" method="POST">
             <label for="body">Reply (can be formatted using 
-            <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"> 
-            markdown</a>)
+                <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown</a>)
             </label>
             <textarea name="body" id="body-text" rows=5>{{ form.body.data or '' }}</textarea>
             <button type="submit">Submit</button>
@@ -31,16 +33,17 @@
         </ul>
         {% endif %}
     </div>
-<hr>
-<ul id="replies-list">
-    {% for reply in replies %}
-    <li class="reply">
-        <p class="reply-info"><a onclick='addHandle("{{reply.username}}")' href="javascript:void(0);">{{reply.username}}</a> {{reply.created_at | relative}} ago</p>
-        <p class="reply-body">{{reply.body | markdown}}</p>
-        <hr>
-    </li>
-    {% endfor %}
-</ul>
+    <hr>
+    <ul id="replies-list">
+        {% for reply in replies %}
+        <li class="reply">
+            <p class="reply-info"><a onclick='addHandle("{{reply.username}}")' href="javascript:void(0);">{{reply.username}}</a> {{reply.created_at | relative}} ago</p>
+            <p class="reply-body">{{reply.body | markdown}}</p>
+            <hr>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 <script type="text/javascript">
     function addHandle(name){
         var replyBox = document.getElementById("body-text");
