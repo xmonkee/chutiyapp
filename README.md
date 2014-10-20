@@ -1,6 +1,5 @@
-###Chutiyapp.com
-
-This contains the source for chutiyapp.com
+#Chutiyapp.com
+The source for the website [chutiyapp.com](chutiyapp.com)
 
 It's a website where people can have anonymous conversations with people in their locality (or any locality). Check it out. Check out the source. Go crazy. 
 
