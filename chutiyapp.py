@@ -8,9 +8,9 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(
     DEBUG=bool(os.getenv('DEBUG', 'FALSE')),
-    SECRET_KEY='\x04\xdf\x9aW\r\xa3\x9f\xaf\x9b\x89A\xb7\xa1\xb0h+\xc8\x0c\xfe\xe1\xbdI\r\x8f',
+    SECRET_KEY='REDACTED',
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 
-	    'postgres://localhost:5432/chutiyapp'),
+	    'REDACTED'),
     SEARCH_RADIUS = int(os.getenv('SEARCH_RADIUS', '3')),
     DEFAULT_LOC = {'lat': 18.9037004, 'lon': 72.8131432},
     POSTS_PER_PAGE = int(os.getenv('POSTS_PER_PAGE','100')),
