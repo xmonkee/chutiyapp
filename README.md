@@ -1,4 +1,4 @@
-#Chutiyapp.com
+#chutiyapp
 The source for the website [chutiyapp.com](chutiyapp.com)
 
 
