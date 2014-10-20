@@ -1,3 +1,11 @@
+###Chutiyapp.com
+
+This contains the source for chutiyapp.com
+
+It's a website where people can have anonymous conversations with people in their locality (or any locality). Check it out. Check out the source. Go crazy. 
+
+The following is the README for the site. 
+
 ###Gimme the basics
 
 You can post anonymously and your posts are tagged with your location. No other data about the user is kept. Then, other people in a radius of a few kilometers (we will keep adjusting the exact radius) can see your post and comment on it. That's it!
