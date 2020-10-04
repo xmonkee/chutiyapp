@@ -1,23 +1,24 @@
-#chutiyapp
+# chutiyapp
+
 The source for the website [chutiyapp.com](chutiyapp.com)
 
+# What's that?
 
-#What's that?
 It's a website where people can have anonymous conversations with people in their locality (or any locality). Check it out. Check out the source. Go crazy. 
 
 The following is the README for the site. 
 
-###Gimme the basics
+### Gimme the basics
 
 You can post anonymously and your posts are tagged with your location. No other data about the user is kept. Then, other people in a radius of a few kilometers (we will keep adjusting the exact radius) can see your post and comment on it. That's it!
 
 Invite people around you to just log in, and start shooting the shit.
 
-###What else does it do?
+### What else does it do?
 
 Honestly? Not much, and that's what we like about it. 
 
-###That's it?
+### That's it?
 
 Well, okay. 
 
